@@ -14,13 +14,13 @@ public class UserResource {
     @Autowired
     private UserDAOService service;
 
-    @GetMapping(value = "/users")
+    @GetMapping("/users")
     public List <User> retrieveAllUsers(){
 
         return service.findAll();
     }
 
-    @GetMapping(value = "/users/{id}")
+    @GetMapping("/users/{id}")
     public User retrieveUser(@PathVariable int id){
         User user = service.findOne(id);
 
@@ -41,5 +41,13 @@ public class UserResource {
                 .toUri();
 
       return ResponseEntity.created(location).build();
+    }
+
+    @DeleteMapping("/users/{id}")
+    public void deleteUser(@PathVariable int id){
+        User user = service.deleteById(id);
+
+        if(user == null)
+            throw new UserNotFoundException("id-" + id);
     }
 }
